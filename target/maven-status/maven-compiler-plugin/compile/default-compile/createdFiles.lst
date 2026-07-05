@@ -1,0 +1,11 @@
+ec\utn\gol\admin\beans\SeleccionBean.class
+ec\utn\gol\admin\models\Seleccion.class
+ec\utn\gol\admin\beans\UsuarioBean.class
+ec\utn\gol\admin\resources\JakartaEE10Resource.class
+ec\utn\gol\admin\services\EstadisticasService.class
+ec\utn\gol\admin\beans\PartidoBean.class
+ec\utn\gol\admin\JakartaRestConfiguration.class
+ec\utn\gol\admin\models\Partido.class
+ec\utn\gol\admin\models\Sede.class
+ec\utn\gol\admin\beans\SedeBean.class
+ec\utn\gol\admin\models\Usuario.class
