@@ -15,6 +15,7 @@ import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
 import javax.net.ssl.SSLContext;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import java.util.Map;
 
 @ApplicationScoped
 public class EstadisticasService {
@@ -133,4 +134,17 @@ public class EstadisticasService {
             client.execute(request, response -> null);
         }
     }
+    
+    public Map<String, Object> login(String email, String password) throws Exception {
+    try (CloseableHttpClient client = crearClienteSinSSL()) {
+        HttpPost request = new HttpPost(BASE_URL + "/Auth/login");
+        String body = String.format("{\"email\":\"%s\",\"password\":\"%s\"}", email, password);
+        request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+        return client.execute(request, response -> {
+            if (response.getCode() != 200) return null;
+            return mapper.readValue(response.getEntity().getContent(),
+                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>(){});
+            });
+        }
+    }    
 }
