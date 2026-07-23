@@ -38,18 +38,29 @@ public class SeleccionBean implements Serializable {
     public void guardar() {
         try {
             service.crearSeleccion(seleccion);
+            // Auditoría: la registra automáticamente EstadisticasAPI vía header X-Usuario-Id.
             seleccion = new Seleccion();
             cargar();
             mensaje("Selección creada correctamente.", false);
         } catch (Exception e) {
-            e.printStackTrace(); // <-- agrega esta línea
+            e.printStackTrace();
             mensaje("Error al guardar: " + e.getMessage(), true);
         }
+    }
+
+    public void prepararEditar(Seleccion s) {
+        this.seleccionEditar = new Seleccion();
+        this.seleccionEditar.setId(s.getId());
+        this.seleccionEditar.setNombre(s.getNombre());
+        this.seleccionEditar.setCodigo(s.getCodigo());
+        this.seleccionEditar.setGrupo(s.getGrupo());
+        this.seleccionEditar.setEscudo(s.getEscudo());
     }
 
     public void actualizar() {
         try {
             service.actualizarSeleccion(seleccionEditar);
+            // Auditoría: la registra automáticamente EstadisticasAPI vía header X-Usuario-Id.
             cargar();
             mensaje("Selección actualizada.", false);
         } catch (Exception e) {

@@ -13,11 +13,13 @@
 </h:head>
 <h:body>
     <div class="layout-wrapper">
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>⚽ UTN Admin</h2>
                 <p>GolMundial 2026</p>
+                <p style="color:#4fc3f7; font-size:12px; margin-top:4px; font-weight: bold;">
+                    👤 #{loginBean.nombreUsuario}
+                </p>
             </div>
             <nav class="sidebar-nav">
                 <h:link outcome="/index" styleClass="nav-item">🏠 Dashboard</h:link>
@@ -25,9 +27,16 @@
                 <h:link outcome="/sedes" styleClass="nav-item">🏟 Sedes</h:link>
                 <h:link outcome="/partidos" styleClass="nav-item">📅 Partidos</h:link>
                 <h:link outcome="/usuarios" styleClass="nav-item">👥 Usuarios</h:link>
+                <h:link outcome="/auditoria" styleClass="nav-item">📋 Auditoría</h:link>
+                
+                <h:form style="padding: 12px 20px; margin-top: 10px;">
+                    <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout}"
+                                     ajax="false" style="width:100%; background:#CC0000; border:none;
+                                     color:#fff; padding:8px; border-radius:6px; cursor:pointer; font-weight: bold;"/>
+                </h:form>
             </nav>
         </div>
-        <!-- CONTENIDO -->
+        
         <div class="main-content">
             <div class="topbar">
                 <h3><ui:insert name="titulo">Panel Admin</ui:insert></h3>

@@ -22,7 +22,9 @@ public class UsuarioBean implements Serializable {
     private Usuario usuarioEditar;
 
     @PostConstruct
-    public void init() { cargar(); }
+    public void init() {
+        cargar();
+    }
 
     public void cargar() {
         try {
@@ -35,6 +37,7 @@ public class UsuarioBean implements Serializable {
     public void actualizar() {
         try {
             service.actualizarUsuario(usuarioEditar);
+            // Auditoría: la registra automáticamente EstadisticasAPI vía header X-Usuario-Id.
             cargar();
             mensaje("Usuario actualizado.", false);
         } catch (Exception e) {
@@ -44,10 +47,18 @@ public class UsuarioBean implements Serializable {
 
     private void mensaje(String texto, boolean error) {
         FacesContext.getCurrentInstance().addMessage(null,
-            new FacesMessage(error ? FacesMessage.SEVERITY_ERROR : FacesMessage.SEVERITY_INFO, texto, null));
+                new FacesMessage(error ? FacesMessage.SEVERITY_ERROR : FacesMessage.SEVERITY_INFO, texto, null));
     }
 
-    public List<Usuario> getUsuarios() { return usuarios; }
-    public Usuario getUsuarioEditar() { return usuarioEditar; }
-    public void setUsuarioEditar(Usuario usuarioEditar) { this.usuarioEditar = usuarioEditar; }
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public Usuario getUsuarioEditar() {
+        return usuarioEditar;
+    }
+
+    public void setUsuarioEditar(Usuario usuarioEditar) {
+        this.usuarioEditar = usuarioEditar;
+    }
 }

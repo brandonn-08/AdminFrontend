@@ -1,8 +1,10 @@
 package ec.utn.gol.admin.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ec.utn.gol.admin.beans.LoginBean;
 import ec.utn.gol.admin.models.*;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -20,25 +22,31 @@ import java.util.Map;
 @ApplicationScoped
 public class EstadisticasService {
 
+    @Inject
+    private LoginBean loginBean;
+
+    // Adjunta el id del admin logueado como header X-Usuario-Id para que
+    // EstadisticasAPI registre la auditoría automáticamente (ver AuditoriaHelper).
+    private void agregarHeaderUsuario(org.apache.hc.client5.http.classic.methods.HttpUriRequestBase request) {
+        request.setHeader("X-Usuario-Id", String.valueOf(loginBean.getUsuarioId()));
+    }
+
     private CloseableHttpClient crearClienteSinSSL() throws Exception {
-    SSLContext sslContext = SSLContextBuilder.create()
-        .loadTrustMaterial(null, (chain, authType) -> true)
-        .build();
-    
-    var socketFactory = SSLConnectionSocketFactoryBuilder.create()
-        .setSslContext(sslContext)
-        .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-        .build();
-    
-    var connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
-        .setSSLSocketFactory(socketFactory)
-        .build();
-    
-    return HttpClients.custom()
-        .setConnectionManager(connectionManager)
-        .build();
-}
-    
+        SSLContext sslContext = SSLContextBuilder.create()
+                .loadTrustMaterial(null, (chain, authType) -> true)
+                .build();
+        var socketFactory = SSLConnectionSocketFactoryBuilder.create()
+                .setSslContext(sslContext)
+                .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                .build();
+        var connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setSSLSocketFactory(socketFactory)
+                .build();
+        return HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .build();
+    }
+
     private static final String BASE_URL = "https://localhost:7274/api";
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -57,6 +65,7 @@ public class EstadisticasService {
         try (CloseableHttpClient client = crearClienteSinSSL()) {
             HttpPost request = new HttpPost(BASE_URL + "/Selecciones");
             request.setEntity(new StringEntity(mapper.writeValueAsString(s), ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
             client.execute(request, response -> null);
         }
     }
@@ -65,6 +74,7 @@ public class EstadisticasService {
         try (CloseableHttpClient client = crearClienteSinSSL()) {
             HttpPut request = new HttpPut(BASE_URL + "/Selecciones/" + s.getId());
             request.setEntity(new StringEntity(mapper.writeValueAsString(s), ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
             client.execute(request, response -> null);
         }
     }
@@ -84,6 +94,16 @@ public class EstadisticasService {
         try (CloseableHttpClient client = crearClienteSinSSL()) {
             HttpPost request = new HttpPost(BASE_URL + "/Sedes");
             request.setEntity(new StringEntity(mapper.writeValueAsString(s), ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
+            client.execute(request, response -> null);
+        }
+    }
+
+    public void actualizarSede(Sede s) throws Exception {
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpPut request = new HttpPut(BASE_URL + "/Sedes/" + s.getId());
+            request.setEntity(new StringEntity(mapper.writeValueAsString(s), ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
             client.execute(request, response -> null);
         }
     }
@@ -103,6 +123,7 @@ public class EstadisticasService {
         try (CloseableHttpClient client = crearClienteSinSSL()) {
             HttpPost request = new HttpPost(BASE_URL + "/Partidos");
             request.setEntity(new StringEntity(mapper.writeValueAsString(p), ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
             client.execute(request, response -> null);
         }
     }
@@ -112,6 +133,7 @@ public class EstadisticasService {
             HttpPut request = new HttpPut(BASE_URL + "/Partidos/" + partidoId + "/resultado");
             String body = String.format("{\"golesLocal\":%d,\"golesVisitante\":%d}", golesLocal, golesVisitante);
             request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
             client.execute(request, response -> null);
         }
     }
@@ -131,20 +153,74 @@ public class EstadisticasService {
         try (CloseableHttpClient client = crearClienteSinSSL()) {
             HttpPut request = new HttpPut(BASE_URL + "/Usuarios/" + u.getId());
             request.setEntity(new StringEntity(mapper.writeValueAsString(u), ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
             client.execute(request, response -> null);
         }
     }
-    
+
+    // ========== AUTH ==========
     public Map<String, Object> login(String email, String password) throws Exception {
-    try (CloseableHttpClient client = crearClienteSinSSL()) {
-        HttpPost request = new HttpPost(BASE_URL + "/Auth/login");
-        String body = String.format("{\"email\":\"%s\",\"password\":\"%s\"}", email, password);
-        request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
-        return client.execute(request, response -> {
-            if (response.getCode() != 200) return null;
-            return mapper.readValue(response.getEntity().getContent(),
-                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>(){});
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpPost request = new HttpPost(BASE_URL + "/Auth/login");
+            String body = String.format("{\"email\":\"%s\",\"password\":\"%s\"}", email, password);
+            request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+            return client.execute(request, response -> {
+                if (response.getCode() != 200) {
+                    return null;
+                }
+                return mapper.readValue(response.getEntity().getContent(),
+                        new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                });
             });
         }
-    }    
+    }
+
+    //============ Registrar Auditoria =========
+    // deprecated: reemplazado por header X-Usuario-Id, ver EstadisticasAPI
+    // (AuditoriaHelper). Ya no se invoca desde los beans; se deja sin borrar
+    // para referencia del flujo anterior y como plan de rollback rápido.
+    public void registrarAuditoria(int usuarioId, String accion, String detalle) throws Exception {
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpPost request = new HttpPost(BASE_URL + "/Auditorias");
+            String body = String.format(
+                    "{\"usuarioId\":%d,\"accion\":\"%s\",\"detalle\":\"%s\"}",
+                    usuarioId, accion, detalle);
+            request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+            client.execute(request, response -> null);
+        }
+    }
+
+    //========== Get Auditorias ================
+    public List<Map<String, Object>> getAuditorias() throws Exception {
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpGet request = new HttpGet(BASE_URL + "/Auditorias");
+            return client.execute(request, response -> {
+                return mapper.readValue(response.getEntity().getContent(),
+                        new com.fasterxml.jackson.core.type.TypeReference<List<Map<String, Object>>>() {
+                });
+            });
+        }
+    }
+
+    //========== Get Resumen =====================
+    public Map<String, Object> getResumen() throws Exception {
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpGet request = new HttpGet(BASE_URL + "/Reportes/resumen");
+            return client.execute(request, response
+                    -> mapper.readValue(response.getEntity().getContent(),
+                            new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                    }));
+        }
+    }
+
+    //========== PARTIDOS ===============
+    public void actualizarEstadoPartido(int partidoId, String estado) throws Exception {
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpPut request = new HttpPut(BASE_URL + "/Partidos/" + partidoId + "/estado");
+            String body = String.format("{\"estado\":\"%s\"}", estado);
+            request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+            agregarHeaderUsuario(request);
+            client.execute(request, response -> null);
+        }
+    }
 }
