@@ -1,11 +1,18 @@
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\PartidoBean.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\SedeBean.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\SeleccionBean.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\UsuarioBean.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\JakartaRestConfiguration.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Partido.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Sede.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Seleccion.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Usuario.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\resources\JakartaEE10Resource.java
-C:\Users\MSI GAMING\Descargas\3°\Proyect_Integrator\Mapache\AdminFrontend\src\main\java\ec\utn\gol\admin\services\EstadisticasService.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\AuditoriaBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\DashboardBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\LoginBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\PartidoBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\ReportesBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\SedeBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\SeleccionBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\beans\UsuarioBean.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\filters\AuthFilter.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\JakartaRestConfiguration.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Auditoria.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Partido.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Sede.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Seleccion.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\models\Usuario.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\resources\JakartaEE10Resource.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\services\EstadisticasService.java
+C:\Users\ferna\OneDrive\Desktop\UTNGol-NetBeanss_J\AdminFrontend\AdminFrontend\src\main\java\ec\utn\gol\admin\services\UTNGolCoinService.java
