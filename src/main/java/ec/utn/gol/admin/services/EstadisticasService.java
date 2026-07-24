@@ -124,7 +124,18 @@ public class EstadisticasService {
             HttpPost request = new HttpPost(BASE_URL + "/Partidos");
             request.setEntity(new StringEntity(mapper.writeValueAsString(p), ContentType.APPLICATION_JSON));
             agregarHeaderUsuario(request);
-            client.execute(request, response -> null);
+            client.execute(request, response -> {
+                int status = response.getCode();
+                if (status < 200 || status >= 300) {
+                    String cuerpo = "";
+                    try {
+                        cuerpo = new String(response.getEntity().getContent().readAllBytes());
+                    } catch (Exception ignored) {
+                    }
+                    throw new RuntimeException("EstadisticasAPI respondió " + status + ": " + cuerpo);
+                }
+                return null;
+            });
         }
     }
 
@@ -240,4 +251,11 @@ public class EstadisticasService {
         }
     }
 
+    public void eliminarPartido(int id) throws Exception {
+        try (CloseableHttpClient client = crearClienteSinSSL()) {
+            HttpDelete request = new HttpDelete(BASE_URL + "/Partidos/" + id);
+            request.setHeader("X-Usuario-Id", String.valueOf(loginBean.getUsuarioId()));
+            client.execute(request, response -> null);
+        }
+    }
 }

@@ -45,6 +45,12 @@ public class PartidoBean implements Serializable {
     }
 
     public void guardar() {
+        if (partido.getSeleccionLocalId() != 0
+                && partido.getSeleccionLocalId() == partido.getSeleccionVisitanteId()) {
+            mensaje("El equipo local y el equipo visitante no pueden ser la misma selección.", true);
+            return;
+        }
+
         try {
             if (fechaHoraDate != null) {
                 partido.setFechaHora(fechaHoraDate.toInstant().toString());
@@ -67,6 +73,16 @@ public class PartidoBean implements Serializable {
             mensaje("Resultado registrado correctamente.", false);
         } catch (Exception e) {
             mensaje("Error al registrar resultado: " + e.getMessage(), true);
+        }
+    }
+
+    public void eliminar(Partido p) {
+        try {
+            service.eliminarPartido(p.getId());
+            partidos = service.getPartidos();
+            mensaje("Partido eliminado correctamente.", false);
+        } catch (Exception e) {
+            mensaje("Error al eliminar: " + e.getMessage(), true);
         }
     }
 
@@ -164,4 +180,5 @@ public class PartidoBean implements Serializable {
     public void setNuevoEstado(String nuevoEstado) {
         this.nuevoEstado = nuevoEstado;
     }
+
 }

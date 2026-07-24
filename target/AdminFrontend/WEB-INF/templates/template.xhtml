@@ -5,47 +5,54 @@
       xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>UTN GolMundial 2026 — Admin</title>
-    <h:outputStylesheet library="css" name="admin.css"/>
-</h:head>
-<h:body>
-    <div class="layout-wrapper">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>⚽ UTN Admin</h2>
-                <p>GolMundial 2026</p>
-                <p style="color:#4fc3f7; font-size:12px; margin-top:4px; font-weight: bold;">
-                    👤 #{loginBean.nombreUsuario}
-                </p>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>UTN GolMundial 2026 — Admin</title>
+        <h:outputStylesheet library="css" name="admin.css"/>
+    </h:head>
+    <h:body>
+        <div class="layout-wrapper">
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2> UTN Admin</h2>
+                    <p>GolMundial 2026</p>
+                    <p style="color:#4fc3f7; font-size:12px; margin-top:4px;">
+                        👤 #{loginBean.nombreUsuario}
+                    </p>
+                </div>
+                <nav class="sidebar-nav">
+                    <h:link outcome="/index" styleClass="nav-item">🏠 Dashboard</h:link>
+                    <h:link outcome="/selecciones" styleClass="nav-item">🏳 Selecciones</h:link>
+                    <h:link outcome="/sedes" styleClass="nav-item">🏟 Sedes</h:link>
+                    <h:link outcome="/partidos" styleClass="nav-item">📅 Partidos</h:link>
+                    <h:link outcome="/usuarios" styleClass="nav-item">👥 Usuarios</h:link>
+                    <h:link outcome="/auditoria" styleClass="nav-item">📋 Auditoría</h:link>
+                    <h:link outcome="/reportes" styleClass="nav-item">📊 Reportes</h:link>
+                    <h:form style="padding: 12px 20px;">
+                        <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout}"
+                                         ajax="false" style="width:100%; background:#CC0000; border:none;
+                                         color:#fff; padding:8px; border-radius:6px; cursor:pointer;"/>
+                    </h:form>
+                </nav>
             </div>
-            <nav class="sidebar-nav">
-                <h:link outcome="/index" styleClass="nav-item">🏠 Dashboard</h:link>
-                <h:link outcome="/selecciones" styleClass="nav-item">🏳 Selecciones</h:link>
-                <h:link outcome="/sedes" styleClass="nav-item">🏟 Sedes</h:link>
-                <h:link outcome="/partidos" styleClass="nav-item">📅 Partidos</h:link>
-                <h:link outcome="/usuarios" styleClass="nav-item">👥 Usuarios</h:link>
-                <h:link outcome="/auditoria" styleClass="nav-item">📋 Auditoría</h:link>
-                
-                <h:form style="padding: 12px 20px; margin-top: 10px;">
-                    <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout}"
-                                     ajax="false" style="width:100%; background:#CC0000; border:none;
-                                     color:#fff; padding:8px; border-radius:6px; cursor:pointer; font-weight: bold;"/>
-                </h:form>
-            </nav>
+            <!-- CONTENIDO -->
+            <div class="main-content">
+                <div class="topbar">
+                    <h3><ui:insert name="titulo">Panel Admin</ui:insert></h3>
+                </div>
+                <div class="content-area">
+                    <p:messages id="globalMessages" showDetail="true" closable="true"/>
+                    <ui:insert name="contenido"/>
+                </div>
+            </div>
         </div>
-        
-        <div class="main-content">
-            <div class="topbar">
-                <h3><ui:insert name="titulo">Panel Admin</ui:insert></h3>
-            </div>
-            <div class="content-area">
-                <p:messages showDetail="true" closable="true"/>
-                <ui:insert name="contenido"/>
-            </div>
-        </div>
-    </div>
-</h:body>
+        <h:form id="formConfirmGlobal">
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+                <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" icon="pi pi-times"/>
+            </p:confirmDialog>
+        </h:form>
+    </h:body>
 </html>
